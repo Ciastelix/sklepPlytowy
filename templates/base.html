@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="początek" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Mateusz Zwierzyński" />
+    <meta name="keywords" content="Słowa jakieś ok" />
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .nav-link:hover {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{url_for('index')}}">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{url_for('index')}}">Strona główna</a></li>
+                    <li><a href="{{url_for('muzyka.wszystko')}}">Muzyka</a></li>
+                    <li><a href="#">Książki</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not current_user %}
+                    <li><a href="{{url_for('uzytkownik.rejstracja')}}" class="nav-link"><span
+                                class="glyphicon glyphicon-user"></span> Zarejestruj</a></li>
+                    {% else %}
+                    <li><a href="{{url_for('uzytkownik.stronaUzytkownika')}}" class="nav-link"><span
+                                class="glyphicon glyphicon-user"></span> Konto</a></li>
+                    {% endif %}
+                    {% if not current_user %}
+                    <li><a href="{{url_for('uzytkownik.zaloguj')}}" class="nav-link"><span
+                                class="glyphicon glyphicon-log-in"></span> Zaloguj</a></li>
+                    {% else %}
+                    <li><a href="{{url_for('uzytkownik.wyloguj')}}" class="nav-link"><span
+                                class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </nav>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">{{msg[0]}}</h4>
+            <p>
+                {{msg[1]}}
+            </p>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </header>
+
+    {% block main %}
+    {% endblock %}
+</body>
+
+</html>
